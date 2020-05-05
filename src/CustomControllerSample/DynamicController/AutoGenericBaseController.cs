@@ -17,7 +17,7 @@ namespace CustomControllerSample.DynamicController
         }    
 
         [HttpPost]
-        public T Add([FromBody]object Data)
+        public virtual T Add([FromBody]object Data)
         {
             var Dat = JsonSerializer.Deserialize<T>(Data.ToString());
             return Dat;

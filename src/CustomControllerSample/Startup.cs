@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore;
 
 namespace CustomControllerSample
 {
@@ -36,6 +37,13 @@ namespace CustomControllerSample
                 {
                     parts.FeatureProviders.Add(new AutoControllerFeatureProvider());
                 });
+
+            var configurationSection = Configuration.GetSection("ConnectionStrings:DefaultConnection");
+            services
+                .AddDbContext<DatabaseContext>(
+                    options => options.UseSqlServer(configurationSection.Value)
+                ); 
+            services.AddScoped<DbContext, DatabaseContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
