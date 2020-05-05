@@ -29,14 +29,8 @@ namespace CustomControllerSample
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddControllers(opts =>
-                {
-                    opts.Conventions.Add(new AutoControllerRouteConvention());
-                })
-                .ConfigureApplicationPartManager(parts =>
-                {
-                    parts.FeatureProviders.Add(new AutoControllerFeatureProvider());
-                });
+                .AddControllers()
+                .AddAutoController();
 
             var configurationSection = Configuration.GetSection("ConnectionStrings:DefaultConnection");
             services
@@ -44,6 +38,8 @@ namespace CustomControllerSample
                     options => options.UseSqlServer(configurationSection.Value)
                 ); 
             services.AddScoped<DbContext, DatabaseContext>();
+
+            var provider = services.BuildServiceProvider().GetRequiredService<IActionDescriptorCollectionProvider>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -57,7 +53,6 @@ namespace CustomControllerSample
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
 
             app.UseAuthorization();
 

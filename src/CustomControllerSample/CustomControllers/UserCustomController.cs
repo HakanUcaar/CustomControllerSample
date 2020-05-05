@@ -3,6 +3,7 @@ using CustomControllerSample.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace CustomControllerSample.CustomControllers
 {
@@ -22,13 +23,26 @@ namespace CustomControllerSample.CustomControllers
         }
 
         [HttpPost]
-        public override T Add([FromBody]object Data)
+        public override ActionResult<T> Add([FromBody]object Data)
         {
             var Dat = JsonSerializer.Deserialize<T>(Data.ToString());
 
             Context.Set<T>().Add(Dat);
             Context.SaveChanges();
             return Dat;
+        }
+
+        [HttpPost]
+        public override ActionResult<T> AddAsyn([FromBody]object Data)
+        {
+            return Task.Run(() =>
+            {
+                var Dat = JsonSerializer.Deserialize<T>(Data.ToString());
+
+                Context.Set<T>().AddAsync(Dat);
+                Context.SaveChanges();
+                return Dat;
+            }).Result;
         }
     }
 }

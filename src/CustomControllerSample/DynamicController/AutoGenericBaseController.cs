@@ -16,11 +16,21 @@ namespace CustomControllerSample.DynamicController
             return "Bu " + typeof(T).Name + " denetcisidir";
         }    
 
+        
         [HttpPost]
-        public virtual T Add([FromBody]object Data)
+        public virtual ActionResult<T> Add([FromBody]object Data)
         {
             var Dat = JsonSerializer.Deserialize<T>(Data.ToString());
             return Dat;
+        }
+
+        [HttpPost]
+        public virtual ActionResult<T> AddAsyn([FromBody]object Data)
+        {            
+            return Task.Run(() =>
+            {
+                return JsonSerializer.Deserialize<T>(Data.ToString());
+            }).Result;
         }
     }
 }
