@@ -8,10 +8,12 @@ namespace CustomControllerSample.DynamicController
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
     public class AutoControllerAttribute : Attribute
     {
-        public AutoControllerAttribute(string Route="")
+        public string Route { get; set; }
+        public Type BaseControllerType { get; set; }
+        public AutoControllerAttribute(string Route = "", Type BaseControllerType = null)
         {
             this.Route = Route;
+            this.BaseControllerType = BaseControllerType;
         }
-        public string Route { get; set; }
     }
 }

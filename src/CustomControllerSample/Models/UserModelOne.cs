@@ -4,7 +4,7 @@ using System;
 namespace CustomControllerSample.Models
 {
     [AutoController("/User/[action]")]
-    public class UserModel 
+    public class UserModelOne 
     {
         public Guid Id { get; set; }
         public string UserName { get; set; }
