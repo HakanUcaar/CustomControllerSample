@@ -13,6 +13,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
+using CustomControllerSample.Extension;
+using System.Configuration;
 
 namespace CustomControllerSample
 {
@@ -29,17 +31,19 @@ namespace CustomControllerSample
         public void ConfigureServices(IServiceCollection services)
         {
             services
-                .AddControllers()
-                .AddAutoController();
+                .AddAutoControllers()
+                .UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                
 
-            var configurationSection = Configuration.GetSection("ConnectionStrings:DefaultConnection");
-            services
-                .AddDbContext<DatabaseContext>(
-                    options => options.UseSqlServer(configurationSection.Value)
-                ); 
-            services.AddScoped<DbContext, DatabaseContext>();
+            //var configurationSection = Configuration.GetSection("ConnectionStrings:DefaultConnection");
+            //services
+            //    .AddDbContext<DatabaseContext>(
+            //        options => options.UseSqlServer(configurationSection.Value)
+            //    );
+            //services.AddScoped<DbContext, DatabaseContext>();
 
-            var provider = services.BuildServiceProvider().GetRequiredService<IActionDescriptorCollectionProvider>();
+            //var provider = services.BuildServiceProvider().GetRequiredService<IActionDescriptorCollectionProvider>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

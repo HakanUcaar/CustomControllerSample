@@ -15,7 +15,6 @@ namespace CustomControllerSample.DynamicController
         {
             return "Bu " + typeof(T).Name + " denetcisidir";
         }    
-
         
         [HttpPost]
         public virtual ActionResult<T> Add([FromBody]object Data)
